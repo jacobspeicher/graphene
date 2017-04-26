@@ -147,6 +147,9 @@ class App(Empty):
                                  register_form=ExtendedRegisterForm)
         #self.mail = Mail(self)
 
+<<<<<<< HEAD
+
+=======
     def weighted_route(self, *args, **kwargs):
         def decorator(view_func):
             compare_key = kwargs.pop('compare_key', None)
@@ -160,6 +163,7 @@ class App(Empty):
             return view_func
         return decorator
                 
+>>>>>>> upstream/master
     def configure_views(self):
 
         def sort_by(resources, property):
@@ -263,6 +267,10 @@ class App(Empty):
         @self.route('/')
         @self.route('/<name>/<prefix>/<suffix>')
         @login_required
+<<<<<<< HEAD
+        
+        def view(name=None, format=None, view=None, prefix=None, suffix=None):
+=======
         def view(name=None, format=None, view=None):
             if format is not None:
                 if format in extensions:
@@ -270,6 +278,7 @@ class App(Empty):
                 else:
                     name = '.'.join([name, format])
             
+>>>>>>> upstream/master
             #print name
             if name is not None:
                 entity = self.NS.local[name]
