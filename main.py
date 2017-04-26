@@ -261,7 +261,6 @@ class App(Empty):
         @self.weighted_route('/<path:name>.<format>', compare_key=bottom_compare_key)
         @self.weighted_route('/<path:name>', compare_key=bottom_compare_key)
         @self.route('/')
-        @self.route('/<name>/<prefix>/<suffix>')
         @login_required
         def view(name=None, format=None, view=None):
             if format is not None:
@@ -282,13 +281,14 @@ class App(Empty):
             resource = get_entity(entity)
             print resource.identifier, content_type
 
+            url = getfullname(name)
+            if url is not None:
+                headers = {'Accept': 'application/rdf+xml'}
+                r = requests.get(url, headers=headers)
+                print r.text
+
             htmls = set(['application/xhtml','text/html'])
             if sadi.mimeparse.best_match(htmls, content_type) in htmls:
-                url = getfullname(resource.identifier + "/" + str(prefix) + "/" + str(suffix))
-                if url is not None:
-                    headers = {'Accept': 'application/rdf+xml'}
-                    r = requests.get(url, headers=headers)
-                    print r.text
                 return render_view(resource)
             else:
                 fmt = dataFormats[sadi.mimeparse.best_match([mt for mt in dataFormats.keys() if mt is not None],content_type)]
